@@ -25,8 +25,7 @@ const Success = () => {
 
       try {
         console.log(query.get('token'));
-        const response = await axios.post(
-          `http://localhost:3000/capture/:${query.get('token')}`, 
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/capture/:${query.get('token')}`, 
           { uid: currentUser.uid }
         );
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 export const generateBlogOutline = async (topic, userInput = '') => {
   try {
     const response = await axios.post(
-      'http://localhost:3000/api/blogs/generate',
+      `${import.meta.env.VITE_API_URL}/api/blogs/generate`,
       {
         topic,
         style: 'informative', // Default style

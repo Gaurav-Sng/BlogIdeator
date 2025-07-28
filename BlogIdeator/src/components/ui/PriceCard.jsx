@@ -35,8 +35,6 @@ const PriceCard = ({ plan,userID }) => {
   `;
 
   const Order = async (amount, name,userID) => {
-    console.log('I am in Order function');
-    console.log(amount,name,userID);
     setLoading(true);
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
