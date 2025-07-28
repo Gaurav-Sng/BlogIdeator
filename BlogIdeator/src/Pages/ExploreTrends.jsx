@@ -64,16 +64,14 @@ export default function ExploreTrends() {
         // Your backend returns { success: true, count: N, data: [...], metadata: {...} }
         const { data: redditData } = response.data; // Destructure the 'data' array from the backend response
 
-        // --- AXIOS IMPLEMENTATION END ---
 
         // Map the data to your component's expected format
         console.log(response.data);
         const formatted = redditData.map((item) => ({
-          id: item.id, // Use item.id from the Reddit post data
-          title: item.blogTopics, // Use item.title from the Reddit post data
-          volume: item.score ? item.score.toLocaleString() : 'N/A', // Format score for display
-          comments: item.comments, // Add comments to the data
-          // You might also want to display comments: item.comments
+          id: item.id, 
+          title: item.blogTopics, 
+          volume: item.score ? item.score.toLocaleString() : 'N/A', 
+          comments: item.comments, 
         }));
         console.log(formatted);
         setTrendsData(formatted);
@@ -97,7 +95,6 @@ export default function ExploreTrends() {
   }, [topic, timeframe]); // Add timeframe to dependencies so changing it re-fetches
 
   const handleSaveTrend = (trendTitle) => {
-    // Ensure we are saving the *title* for string comparison and firebase
     if (!savedTrends.includes(trendTitle)) {
       const updatedSavedTrends = [...savedTrends, trendTitle];
       setSavedTrends(updatedSavedTrends);
@@ -109,8 +106,7 @@ export default function ExploreTrends() {
 
   const handleGenerateBlog = async (topicTitle) => {
     try {
-      // Assuming 'topicTitle' here is the title of the trend, e.g., 'Bitcoin'
-      navigate('/blogGenerator', { state: { topic: topicTitle } }); // Pass the trend title as topic
+      navigate('/blogGenerator', { state: { topic: topicTitle } }); 
     } catch (err) {
       alert(`Blog generation failed: ${err.message}`);
     }
@@ -120,10 +116,10 @@ export default function ExploreTrends() {
     <>
       <Nav />
 
-      <div className="bg-gray-50 py-6 px-4 md:px-10 min-h-screen"> {/* Added min-h-screen */}
+      <div className="bg-gray-50 py-6 px-4 md:px-10 min-h-screen"> 
         <h1 className="text-3xl font-bold text-gray-800 mb-4">Blog Topic Ideas</h1>
 
-        <div className="flex items-center gap-4 mb-6 flex-wrap"> {/* Added flex-wrap */}
+        <div className="flex items-center gap-4 mb-6 flex-wrap"> 
           {/* Topic selector */}
           <div className="flex gap-2 flex-wrap">
             <select
