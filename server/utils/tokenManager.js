@@ -67,7 +67,7 @@ async function refreshAccessToken(refreshToken) {
         headers: {
           Authorization: getAuthHeader(),
           'Content-Type': 'application/x-www-form-urlencoded',
-          'User-Agent': 'TrendBuddyBot/1.0 by your_reddit_username'
+          'User-Agent': 'TrendBuddyBot/1.0 by Smart_Alps3338'
         }
       }
     );
@@ -129,7 +129,7 @@ async function testRedditConnection() {
     const response = await axios.get('https://oauth.reddit.com/api/v1/me', {
       headers: {
         Authorization: `Bearer ${token}`,
-        'User-Agent': 'TrendBuddyBot/1.0 by your_reddit_username'
+        'User-Agent': 'TrendBuddyBot/1.0 by Smart_Alps3338'
       }
     });
     
