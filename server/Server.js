@@ -59,8 +59,8 @@ app.post("/orders", async (req, res) => {
       custom_id: `${userID}::${planName}`
     }],
     application_context: {
-      return_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancel",
+      return_url: `https://blog-ideator.vercel.app/success`,
+      cancel_url: `https://blog-ideator.vercel.app/cancel`,
     }
   });
 
