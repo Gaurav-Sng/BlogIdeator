@@ -31,7 +31,6 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
           <Route path="/success" element={<Success />} />
-          {/* Catch-all redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path='/About' element={<About/>}/>
           <Route path='/Pricing' element={<Pricing/>}/>

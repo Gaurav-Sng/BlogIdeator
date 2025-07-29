@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 
-const PriceCard = ({ plan,userID }) => {
+const PriceCard = ({ plan, userID }) => {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const getServiceDescription = (serviceKey, featureValue) => {
     switch (serviceKey) {
@@ -34,7 +37,11 @@ const PriceCard = ({ plan,userID }) => {
     p-8 flex flex-col items-center text-center border
   `;
 
-  const Order = async (amount, name,userID) => {
+  const Order = async (amount, name, userID) => {
+    if (userID === null || userID === undefined) {
+      navigate('/login');
+      return;
+    }
     setLoading(true);
     try {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -47,16 +54,16 @@ const PriceCard = ({ plan,userID }) => {
         headers: {
           'Content-Type': 'application/json'
         }
-      },           
-);
-    console.log(response);
+      },
+      );
+      console.log(response);
       if (response.status !== 200) {
         console.log("Error in response:", response);
       }
       const data = response.data;
       console.log(data);
       const { id: order_id, approvalUrl } = data;
-      console.log("your order_id  is: ",order_id);
+      console.log("your order_id  is: ", order_id);
       console.log(approvalUrl);
       window.location.href = approvalUrl;
     } catch (error) {
@@ -107,14 +114,14 @@ const PriceCard = ({ plan,userID }) => {
         })}
       </ul>
 
-      <button 
+      <button
         className={`
           mt-auto w-full py-3 px-6 text-lg font-semibold rounded-lg
           ${plan.isPopular ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-gray-100 text-indigo-600 border border-indigo-600 hover:bg-gray-200'}
           transition-colors duration-300
         `}
-        onClick={() => Order(plan.price, plan.name,userID)}
-        disabled={plan.name ==='Free Plan'||loading}
+        onClick={() => Order(plan.price, plan.name, userID)}
+        disabled={plan.name === 'Free Plan' || loading}
       >
         {loading ? 'Processing...' : `Choose ${plan.name}`}
       </button>
