@@ -8,7 +8,7 @@ import axios from 'axios'; // Import axios
 export default function ExploreTrends() {
   const [topic, setTopic] = useState('tech');
   const [timeframe, setTimeframe] = useState('day'); // Default to 'day' as per backend API 't' param
-  const [savedTrends, setSavedTrends] = useState([]); // Initialize as empty, 'Mega Millions' seems like test data
+  const [savedTrends, setSavedTrends] = useState([]); 
   const [trendsData, setTrendsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -31,49 +31,40 @@ export default function ExploreTrends() {
   };
 
   const getTopicSubreddits = (topic) => {
-    // Ensure 'popular' is handled if topicMap[topic] is undefined or empty
     const subreddits = topicMap[topic];
     if (!subreddits || subreddits.length === 0) {
       console.warn(`No subreddits defined for topic: ${topic}, defaulting to 'popular'.`);
       return 'popular';
     }
-    // Return a random subreddit from the list
     return subreddits[Math.floor(Math.random() * subreddits.length)];
   };
 
   useEffect(() => {
     const fetchTrends = async () => {
       setLoading(true);
-      setError(null); // Clear previous errors
+      setError(null); 
       try {
         const subreddit = getTopicSubreddits(topic); // Get a random subreddit for the chosen topic
 
         const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-        // --- AXIOS IMPLEMENTATION START ---
         const response = await axios.get(`${apiUrl}/api/trends`, {
           params: {
             subreddit: subreddit,
             timeframe: timeframe,
-            // You had generateTopics in your backend, if needed, add it here:
-            // generateTopics: 'true' // or false
           }
         });
 
         // Axios automatically parses JSON and puts it in response.data
-        // Your backend returns { success: true, count: N, data: [...], metadata: {...} }
-        const { data: redditData } = response.data; // Destructure the 'data' array from the backend response
+        const { data: redditData } = response.data; 
 
 
-        // Map the data to your component's expected format
-        console.log(response.data);
         const formatted = redditData.map((item) => ({
           id: item.id, 
           title: item.blogTopics, 
           volume: item.score ? item.score.toLocaleString() : 'N/A', 
           comments: item.comments, 
         }));
-        console.log(formatted);
         setTrendsData(formatted);
       } catch (err) {
         console.error('Failed to fetch Reddit trends (frontend):', err);
@@ -92,7 +83,7 @@ export default function ExploreTrends() {
     };
 
     fetchTrends();
-  }, [topic, timeframe]); // Add timeframe to dependencies so changing it re-fetches
+  }, [topic, timeframe]); 
 
   const handleSaveTrend = (trendTitle) => {
     if (!savedTrends.includes(trendTitle)) {
@@ -125,11 +116,11 @@ export default function ExploreTrends() {
             <select
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              className="px-3 py-1.5 rounded border border-gray-300 bg-white text-sm shadow-sm" // Removed overlay-y-auto as it's not a valid class for select
+              className="px-3 py-1.5 rounded border border-gray-300 bg-white text-sm shadow-sm" 
               size={1}
             >
               {Object.entries(topicMap).map(([tKey, tValue]) => (
-                <option value={tKey} key={tKey}>{tKey.charAt(0).toUpperCase() + tKey.slice(1)}</option> // Capitalize first letter for display
+                <option value={tKey} key={tKey}>{tKey.charAt(0).toUpperCase() + tKey.slice(1)}</option> 
               ))}
             </select>
           </div>
@@ -151,7 +142,6 @@ export default function ExploreTrends() {
 
         {/* Content */}
         <div className="grid md:grid-cols-3 gap-6">
-          {/* Left: Trends */}
           <div className="md:col-span-2 space-y-4">
             {loading && <p>Loading blog topics...</p>}
             {error && <p className="text-red-600">{error}</p>}
@@ -192,7 +182,6 @@ export default function ExploreTrends() {
               ))}
           </div>
 
-          {/* Right: Saved */}
           <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 h-fit"> {/* Added h-fit */}
             <h3 className="text-xl font-semibold mb-3 text-gray-800">Saved Topics</h3>
             {savedTrends.length === 0 ? (

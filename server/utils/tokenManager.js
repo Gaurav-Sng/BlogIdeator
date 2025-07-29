@@ -36,7 +36,6 @@ async function initializeTokensFromCode() {
     }
     const expiresAt = new Date(Date.now() + (response.data.expires_in - 60) * 1000); // 1 min buffer
     
-    // Clear any existing tokens and store new ones
     await Token.deleteMany({});
     await Token.create({
       accessToken: response.data.access_token,
@@ -54,7 +53,6 @@ async function initializeTokensFromCode() {
   }
 }
 
-// Refresh access token using refresh token
 async function refreshAccessToken(refreshToken) {
   try {
     console.log('Refreshing Reddit access token...');
@@ -80,7 +78,6 @@ async function refreshAccessToken(refreshToken) {
 
     const expiresAt = new Date(Date.now() + (response.data.expires_in - 60) * 1000);
     
-    // Update existing token document
     await Token.findOneAndUpdate({}, {
       accessToken: response.data.access_token,
       expiresAt
@@ -96,18 +93,15 @@ async function refreshAccessToken(refreshToken) {
   }
 }
 
-// Get valid access token (handles refresh automatically)
 async function getValidAccessToken() {
   try {
     let tokenDoc = await Token.findOne({});
     
-    // If no token exists, initialize from auth code
     if (!tokenDoc) {
       console.log('No token found, initializing from authorization code...');
       return await initializeTokensFromCode();
     }
 
-    // Check if token is expired (with 1 minute buffer)
     if (new Date() > tokenDoc.expiresAt) {
       console.log('Token expired, refreshing...');
       
@@ -128,7 +122,6 @@ async function getValidAccessToken() {
   }
 }
 
-// Test function to validate Reddit connection
 async function testRedditConnection() {
   try {
     const token = await getValidAccessToken();
@@ -141,8 +134,7 @@ async function testRedditConnection() {
     });
     
     console.log('Reddit connection test successful!');
-    console.log('Authenticated as:', response.data.name);
-    console.log('Account created:', new Date(response.data.created_utc * 1000));
+   
     return true;
   } catch (error) {
     console.error('Reddit connection test failed:', error.response?.data || error.message);

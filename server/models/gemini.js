@@ -25,7 +25,6 @@ function getStyleGuidance(style) {
 }
 
 
-// Main service functions
 
 async function generateBlogPost(topic, style = 'informative', length = 'medium') {
   const cacheKey = `blog_${topic}_${style}_${length}`;
@@ -37,7 +36,7 @@ async function generateBlogPost(topic, style = 'informative', length = 'medium')
   prompt += `Style: ${getStyleGuidance(style)}\n`;
   prompt += `Format: Markdown with headings, bullet points, and examples.`;
   try {
-    // CORRECTED: Proper payload structure for Gemini API
+    //payload structure for Gemini API
     const result = await model.generateContent({
       contents: [{
         role: 'user',

@@ -11,14 +11,11 @@ const generateBlogTopicsFromPost = async (data) => {
     throw new Error("Gemini model object is not provided to generateBlogTopicsFromPost.");
   }
 
-  // Use a for...of loop to correctly handle async/await operations sequentially.
-  // If parallel processing is desired, consider Promise.all with Array.prototype.map.
   for (const [title, comments] of Object.entries(data)) {
     const prompt = `Create most compelling and seo optimized blog title around the topic "${title}". Use these Reddit comments for reactions and inspiration: "${comments}".
                       Provide one 5-8 words short distinct, catchy title. Say title only, directly return title.`;
     const cacheKey = `blog_topic_${title.replace(/\s+/g, '_').toLowerCase()}`; // Generate a unique cache key
 
-    // Check cache first
 
     if (cache.has(cacheKey)) {
       console.log(`Cache hit for "${title}"`);
@@ -28,18 +25,16 @@ const generateBlogTopicsFromPost = async (data) => {
         generatedTopic: cache.get(cacheKey),
         source: 'cache'
       });
-      continue; // Move to the next iteration
+      continue; 
     }
 
     try {
-      // CORRECTED: Direct call to model.generateContent
       const result = await model.generateContent({
         contents: [{
           role: 'user',
           parts: [{ text: prompt }]
         }]
       });
-      // Extract text from the result object returned by the client library
       const text = result.response.text();
 
       cache.set(cacheKey, text); // Store in cache
@@ -62,16 +57,14 @@ const generateBlogTopicsFromPost = async (data) => {
     }
   }
 
-  return generatedTopics; // Return the collected results
+  return generatedTopics;
 };
 
 
-// New endpoint for getting blog topics from multiple subreddit
 const fetchTrends = async (req, res) => {
   try {
     const { generateTopics = true, subreddit = 'popular', timeframe = 'day' } = req.query;
     const accessToken = await getValidAccessToken();
-   // console.log("\nsubreddit", subreddit);
 
     const redditResponse = await axios.get(`https://oauth.reddit.com/r/${subreddit}/hot`, {
       headers: {
@@ -93,22 +86,19 @@ const fetchTrends = async (req, res) => {
       created: new Date(post.data.created_utc * 1000),
     }));
 
-    // Filter out low-engagement posts
     trends = trends.filter(trend => trend.score > 300 && trend.comments > 50);
 
     // Generate blog topics if requested
     if (generateTopics) {
       console.log('Starting blog topic generation...');
 
-      // Prepare data with actual comments
       const dataForGeneration = {};
 
-      // Fetch comments for each trend (limit to top 3 to avoid too many API calls)
+      // Fetch comments for each trend (limited to top 3 to avoid too many API calls)
       const topTrends = trends.slice(0, 3);
 
       for (const trend of topTrends) {
         try {
-          // Fetch comments for this specific post
           const commentsResponse = await axios.get(`https://oauth.reddit.com/comments/${trend.id}`, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -120,7 +110,6 @@ const fetchTrends = async (req, res) => {
             }
           });
 
-          // Extract comment text
           const comments = commentsResponse.data[1]?.data?.children
             ?.filter(comment => comment.data.body &&
               comment.data.body !== '[deleted]' &&
@@ -141,9 +130,7 @@ const fetchTrends = async (req, res) => {
         }
       }
 
-      // console.log('Comments data prepared:', Object.keys(dataForGeneration));
 
-      // FIXED: Actually await the async function
       const generatedTopics = await generateBlogTopicsFromPost(dataForGeneration);
 
       // Map the generated topics back to the trends
@@ -161,7 +148,6 @@ const fetchTrends = async (req, res) => {
       console.log('Blog topic generation completed');
     }
 
-  //  console.log('Final trends with blog topics:', trends.length);
     res.json({
       success: true,
       count: trends.length,

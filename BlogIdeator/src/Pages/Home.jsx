@@ -5,7 +5,6 @@ import Footer from "../components/ui/Footer";
 import Nav from "../components/ui/Nav";
 import { useNavigate } from "react-router-dom";
 const BlogBuddyHome = () => {
-  // Sample trending topics data
   const trendingTopics = [
     { id: 1, title: "AI in Healthcare", score: 95, category: "Technology" },
     { id: 2, title: "Sustainable Fashion", score: 87, category: "Lifestyle" },
@@ -71,7 +70,6 @@ const BlogBuddyHome = () => {
           </div>
         </div>
 
-        {/* Image Container - Fire Icon Only */}
         <div className="w-full md:w-1/2 flex justify-center">
           <div className="mt-5 md:mt-0 md:mr-10 max-w-xs sm:max-w-md w-full">
             <img
@@ -88,7 +86,7 @@ const BlogBuddyHome = () => {
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold mb-2">🔥 Trending Now</h2>
             <p className="text-gray-600 text-sm sm:text-base">
-              Explore what's hot on Google Trends right now
+              Explore what's hot on Internet right now
             </p>
           </div>
 
@@ -138,7 +136,7 @@ const BlogBuddyHome = () => {
     <div className="container mx-auto px-4 sm:px-6">
       <div className="text-center mb-8 sm:mb-12">
         <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-          ✅ Why Choose TrendBuddy
+          ✅ Why Choose BlogIdeator
         </h2>
         <p className="text-gray-600 text-sm sm:text-base">
           Supercharge your content creation with these powerful features

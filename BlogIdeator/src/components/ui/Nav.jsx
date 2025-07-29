@@ -38,7 +38,7 @@ const Nav = () => {
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
       <div className="flex justify-between items-center px-4 sm:px-6 py-4 max-w-7xl mx-auto">
-        <div className="font-bold text-2xl text-blue-700">TrendBuddy</div>
+        <div className="font-bold text-2xl text-blue-700">BlogIdeator</div>
         {/* Hamburger for mobile */}
         <button
           className="md:hidden flex items-center text-2xl text-blue-700 focus:outline-none"

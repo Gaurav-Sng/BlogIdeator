@@ -18,7 +18,7 @@ export default function BlogOutlineForm({ setOutline, title }) {
     setLoading(true);
 
     try {
-      // Enforce plan-based limit
+      // Enforcing plan-based limit
       if (!(await canGenerateBlog())) {
         setError('You have reached your monthly blog generation limit for your plan.');
         setLoading(false);

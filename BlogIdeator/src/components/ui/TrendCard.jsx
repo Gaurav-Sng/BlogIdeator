@@ -49,7 +49,6 @@ const TrendCard = ({ trend }) => {
           </div>
         )}
 
-        {/* Generate Blog Button */}
         <Link
           to={`/generate-blog?topic=${encodeURIComponent(trend.title?.query)}`}
           className="mt-auto w-full py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium rounded-md text-sm text-center flex items-center justify-center transition-all duration-200"

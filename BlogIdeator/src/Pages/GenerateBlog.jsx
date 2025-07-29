@@ -5,7 +5,6 @@ import Footer from '../components/ui/Footer';
 import Nav from '../components/ui/Nav';
 import { useLocation } from 'react-router-dom';
 import { saveBlog } from '../firebase/firebaseUtils';
-// import { onSnapshot } from 'firebase/firestore';
 
 
 export default function GenerateBlog() {
