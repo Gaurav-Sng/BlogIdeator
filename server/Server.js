@@ -79,11 +79,8 @@ app.post("/orders", async (req, res) => {
 
 // PAYPAL PAYMENT CAPTURE
 app.post("/capture/:orderID", async (req, res) => {
-  var { orderID } = req.params;
+  const { orderID } = req.params;
   const { uid } = req.body;
-  orderID=orderID.slice(1, orderID.length);
-  console.log("Order ID received for capture:", orderID);
-
   const request = new paypal.orders.OrdersCaptureRequest(orderID);
   request.requestBody({});
   try {
@@ -91,13 +88,22 @@ app.post("/capture/:orderID", async (req, res) => {
     const status = capture.result.status;
     const captureID = capture.result.purchase_units[0].payments.captures[0].id;
     const amount = capture.result.purchase_units[0].payments.captures[0].amount;
+    const customID = capture.result.purchase_units[0].custom_id;
+    let planName = "basic"; 
+    if (customID && customID.includes("::")) {
+     const [, extractedPlan] = customID.split("::");
+      if (extractedPlan) {
+        planName = extractedPlan;
+    }
+ }
+
 
     // Check if the payment is completed
     if (status === 'COMPLETED') {
-      await admin.auth().setCustomUserClaims(uid, { plan: 'pro' });
+      await admin.auth().setCustomUserClaims(uid, { plan: planName });
 
       await admin.firestore().collection('users').doc(uid).update({
-        plan: 'pro',
+        plan: planName,
         upgradedAt: admin.firestore.FieldValue.serverTimestamp(),
         paypalCaptureID: captureID,
         paymentAmount: amount,
@@ -105,10 +111,10 @@ app.post("/capture/:orderID", async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        message: `Plan upgraded to PRO`,
+        message: `Plan upgraded to ${planName}`,
         captureID,
         amount,
-        plan: 'pro'
+        plan: planName
       });
     } else {
       return res.status(400).json({ success: false, message: 'Payment not completed' });
