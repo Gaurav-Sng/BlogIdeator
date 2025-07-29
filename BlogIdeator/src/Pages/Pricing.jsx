@@ -2,15 +2,12 @@ import React from 'react'
 import PriceCard from '../components/ui/PriceCard'
 import Footer from '../components/ui/Footer'
 import Nav from '../components/ui/Nav';
-import {auth} from '../firebase/Config'
 
 
 
 const Pricing = () => {
 
-  const user=auth.currentUser;
 
-  const userID=user.uid;
   const pricingPlans = [
     {
       id: 'free',
@@ -69,7 +66,7 @@ const Pricing = () => {
         <div className="grid grid-cols-1  lg:grid-cols-3 gap-8 justify-items-center">
           {
             pricingPlans.map((plan) => (
-              <PriceCard key={plan.id} plan={plan} userID={userID} />
+              <PriceCard key={plan.id} plan={plan}  />
             ))
           }
         </div>

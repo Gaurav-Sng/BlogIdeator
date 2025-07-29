@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../../firebase/Config';
 
 
 
-const PriceCard = ({ plan, userID }) => {
+const PriceCard = ({ plan}) => {
+  const user = auth.currentUser;
+  const userID = user ? user.uid : null; 
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
